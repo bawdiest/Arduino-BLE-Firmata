@@ -16,7 +16,7 @@
 
 module.exports = function(RED) {
     "use strict";
-    require('noble');
+    var BLE = require('noble');
 
     // The Board Definition - this opens (and closes) the connection
     function ArduinoNode(n) {
@@ -24,12 +24,11 @@ module.exports = function(RED) {
         this.device = n.device || null;
         this.repeat = n.repeat||25;
         var node = this;
-        noble.startScanning();
+        BLE.startScanning();
         if(peripheral.advertisement.localName == 'UART') {
         	peripheral.connect(function(error) {
-                node.board.connect("UART");
                 node.log(RED._("arduino.status.connected",{device: peripheral.uuid}));
-                noble.stopScanning();
+                BLE.stopScanning();
             })
              }
         };
