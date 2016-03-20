@@ -26,11 +26,11 @@ module.exports = function(RED) {
         var node = this;
         node.board = new ArduinoFirmata();
         // TODO: nls
-        ArduinoFirmata.list(function (err, ports) {
-            if (!node.device) {
-                node.log(RED._("arduino.status.connectfirst"));
+        //ArduinoFirmata.list(function (err, ports) {
+        //    if (!node.device) {
+        //        node.log(RED._("arduino.status.connectfirst"));
                 node.board.connect("UART");
-            }
+/*            }
             else {
                 if (ports.indexOf(node.device) === -1) {
                     node.warn(RED._("arduino.errors.devnotfound",{dev:node.device}));
@@ -41,7 +41,7 @@ module.exports = function(RED) {
                     node.board.connect(node.device);
                 }
             }
-
+*/
             node.board.on('boardReady', function() {
                 node.log(RED._("arduino.status.connected",{device:node.board.serialport_name}));
                 if (RED.settings.verbose) {

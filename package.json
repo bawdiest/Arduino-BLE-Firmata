@@ -1,8 +1,9 @@
 {
-    "name"          : "node-red-node-arduino-BLE-aREST",
+    "name"          : "node-red-node-arduino-BLE-firmata",
     "version"       : "0.0.1",
     "description"   : "A Node-RED node to talk to an Arduino running aREST protocol over BLE",
     "dependencies"  : {
+    	"ble-firmata": "*"
     },
     "repository" : {
         "type":"git",
