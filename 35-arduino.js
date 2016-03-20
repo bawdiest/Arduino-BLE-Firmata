@@ -33,7 +33,7 @@ module.exports = function(RED) {
         this.device = n.device || null;
         this.repeat = n.repeat||25;
         var node = this;
-        noble.on('discover', function(peripheral) {
+        BLE.on('discover', function(peripheral) {
         if(peripheral.advertisement.localName == 'UART') {
         	peripheral.connect(function(error) {
                 node.log(RED._("arduino.status.connected",{device: peripheral.uuid}));
