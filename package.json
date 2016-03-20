@@ -1,0 +1,23 @@
+{
+    "name"          : "node-red-node-arduino-BLE-aREST",
+    "version"       : "0.0.1",
+    "description"   : "A Node-RED node to talk to an Arduino running aREST protocol over BLE",
+    "dependencies"  : {
+    },
+    "repository" : {
+        "type":"git",
+        "url":"https://github.com/bawdiest/node-arduino-firmata"
+    },
+    "license": "Apache-2.0",
+    "keywords": [ "node-red", "arduino", "firmata", "BLE" ],
+    "node-red"      : {
+        "nodes"     : {
+            "arduino": "35-arduino.js"
+        }
+    },
+    "author": {
+        "name": "Makarov Mikhail",
+        "email": "com@mikmak.cc",
+        "url": "http://www.mikmak.cc"
+    }
+}
