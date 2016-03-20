@@ -20,17 +20,27 @@ module.exports = function(RED) {
 
     // The Board Definition - this opens (and closes) the connection
     function ArduinoNode(n) {
+    	
+    	BLE.on('stateChange', function(state) {
+  if (state === 'poweredOn') {
+    BLE.startScanning();
+  } else {
+    BLE.stopScanning();
+  }
+});
+    	
         RED.nodes.createNode(this,n);
         this.device = n.device || null;
         this.repeat = n.repeat||25;
         var node = this;
-        BLE.startScanning();
+        noble.on('discover', function(peripheral) {
         if(peripheral.advertisement.localName == 'UART') {
         	peripheral.connect(function(error) {
                 node.log(RED._("arduino.status.connected",{device: peripheral.uuid}));
                 BLE.stopScanning();
             })
              }
+           })
         };
 
     RED.nodes.registerType("arduino-board",ArduinoNode);
