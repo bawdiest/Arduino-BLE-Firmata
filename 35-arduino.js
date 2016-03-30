@@ -43,6 +43,9 @@ module.exports = function(RED) {
 		//bleSerial.on('scanning', function(status){
 		//  console.log("radio status: " + status);
 		//})
+		node.board.on('connected', function(data) {
+			console.log("connected");
+		});
 
 		node.on('close', function(done) {
 			node.board.disconnect();
