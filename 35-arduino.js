@@ -70,7 +70,7 @@ module.exports = function(RED) {
 				shape : "ring",
 				text : "node-red:common.status.connecting"
 			});
-			node.board.on('connect', function() {
+			node.board.on('connected', function(data) {
 				node.status({
 					fill : "green",
 					shape : "dot",
@@ -109,7 +109,7 @@ module.exports = function(RED) {
 				shape : "ring",
 				text : "node-red:common.status.connecting"
 			});
-			node.board.on('connect', function() {
+			node.board.on('connected', function(data) {
 				node.status({
 					fill : "green",
 					shape : "dot",
