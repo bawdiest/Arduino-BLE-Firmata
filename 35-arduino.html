@@ -136,9 +136,8 @@
 
 <script type="text/x-red" data-template-name="arduino-board">
     <div class="form-row">
-        <label for="node-config-input-device"><i class="fa fa-random"></i> <span data-i18n="arduino.label.port"></span></label>
-        <input type="text" id="node-config-input-device" style="width:60%;" data-i18n="[placeholder]arduino.placeholder.port"/>
-        <a id="node-config-lookup-serial" class="btn"><i id="node-config-lookup-serial-icon" class="fa fa-search"></i></a>
+        <label for="node-config-input-device"><i class="fa fa-random"></i></label>
+        <input type="text" id="node-config-input-device" style="width:60%;" />
     </div>
     <div class="form-tips"><span data-i18n="[html]arduino.tip.conf"></span></div>
 </script>
@@ -151,7 +150,9 @@
         },
         label: function() {
             return this.device||"arduino";
-        },
+        }
+        });
+/*        ,
         oneditprepare: function() {
             try {
                 $("#node-config-input-device").autocomplete( "destroy" );
@@ -180,4 +181,5 @@
             });
         }
     });
+ */
 </script>
