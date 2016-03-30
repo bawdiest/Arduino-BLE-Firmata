@@ -15,66 +15,116 @@
  **/
 
 module.exports = function(RED) {
-    "use strict";
-    var BLE = require('noble');
+	"use strict";
+	var BLE = require('noble');
 
-    // The Board Definition - this opens (and closes) the connection
-    function ArduinoNode(n) {
-    	
-    	BLE.on('stateChange', function(state) {
-  if (state === 'poweredOn') {
-    BLE.startScanning();
-  } else {
-    BLE.stopScanning();
-  }
-});
-    	
-        RED.nodes.createNode(this,n);
-        this.device = n.device || null;
-        this.repeat = n.repeat||25;
-        var node = this;
-        BLE.on('discover', function(peripheral) {
-        if(peripheral.advertisement.localName == 'UART') {
-        	peripheral.connect(function(error) {
-                node.log(RED._("arduino.status.connected",{device: peripheral.uuid}));
-                BLE.stopScanning();
-            })
-             }
-           })
-        };
+	// The Board Definition - this opens (and closes) the connection
+	function ArduinoNode(n) {
+		var BleUart = require('/home/pi/BluetoothLE-Examples/noble/readSerial/ble-uart.js');
 
-    RED.nodes.registerType("arduino-board",ArduinoNode);
+		var node = this;
+
+		// use a predefined UART service (nordic, redbear, laird, bluegiga)
+		// var bleSerial = new BleUart('nordic');
+
+		// optionally define a custom service
+		var uart = {
+			serviceUUID : '6e400001-b5a3-f393-e0a9-e50e24dcca9e',
+			txUUID : '6e400002-b5a3-f393-e0a9-e50e24dcca9e',
+			rxUUID : '6e400003-b5a3-f393-e0a9-e50e24dcca9e'
+		}
+		node.board = new BleUart('UART', uart);
+
+		// this function gets called when the program
+		// establishes a connection with the remote BLE radio:
+
+		// thus function gets called if the radio successfully starts scanning:
+		//bleSerial.on('scanning', function(status){
+		//  console.log("radio status: " + status);
+		//})
+
+		node.on('close', function(done) {
+			node.board.disconnect();
+		});
+
+	};
+
+	RED.nodes.registerType("arduino-board", ArduinoNode);
+
+	// The Input Node
+	function DuinoNodeIn(n) {
+		RED.nodes.createNode(this, n);
+		this.buttonState = -1;
+		this.pin = n.pin;
+		this.state = n.state;
+		this.arduino = n.arduino;
+		this.serverConfig = RED.nodes.getNode(this.arduino);
+
+		if ( typeof this.serverConfig === "object") {
+			this.board = this.serverConfig.board;
+			var node = this;
+
+			node.status({
+				fill : "red",
+				shape : "ring",
+				text : "node-red:common.status.connecting"
+			});
+			node.board.on('connect', function() {
+				node.status({
+					fill : "green",
+					shape : "dot",
+					text : "node-red:common.status.connected"
+				});
+			});
+
+			// this function gets called when new data is received from
+			// the Bluetooth LE serial service:
+			node.board.on('data', function(data) {
+				//var msg = {payload:e.value, topic:e.pin};
+				node.send(data);
+			});
+
+		}
+	}
 
 
-    // The Input Node
-    function DuinoNodeIn(n) {
-        RED.nodes.createNode(this,n);
-        this.buttonState = -1;
-        this.pin = n.pin;
-        this.state = n.state;
-        this.arduino = n.arduino;
-        this.serverConfig = RED.nodes.getNode(this.arduino);
+	RED.nodes.registerType("arduino in", DuinoNodeIn);
 
-    }
-    RED.nodes.registerType("arduino in",DuinoNodeIn);
+	// The Output Node
+	function DuinoNodeOut(n) {
+		RED.nodes.createNode(this, n);
+		this.buttonState = -1;
+		this.pin = n.pin;
+		this.state = n.state;
+		this.arduino = n.arduino;
+		this.serverConfig = RED.nodes.getNode(this.arduino);
+
+		if ( typeof this.serverConfig === "object") {
+			this.board = this.serverConfig.board;
+			var node = this;
+
+			node.status({
+				fill : "red",
+				shape : "ring",
+				text : "node-red:common.status.connecting"
+			});
+			node.board.on('connect', function() {
+				node.status({
+					fill : "green",
+					shape : "dot",
+					text : "node-red:common.status.connected"
+				});
+			});
+
+			node.on("input", function(msg) {
+				console.log("Connected to BLE. Sending a hello message");
+				node.board.write(msg.payload);
+
+			})
+		}
+	}
 
 
-    // The Output Node
-    function DuinoNodeOut(n) {
-        RED.nodes.createNode(this,n);
-        this.buttonState = -1;
-        this.pin = n.pin;
-        this.state = n.state;
-        this.arduino = n.arduino;
-        this.serverConfig = RED.nodes.getNode(this.arduino);
- 
-
-                node.on("input", function(msg) {
-  
-                   })
-    }
-    
-    RED.nodes.registerType("arduino out",DuinoNodeOut);
-
+	RED.nodes.registerType("arduino out", DuinoNodeOut);
 
 }
