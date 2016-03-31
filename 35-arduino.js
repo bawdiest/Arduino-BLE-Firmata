@@ -42,7 +42,7 @@ module.exports = function(RED) {
 		// thus function gets called if the radio successfully starts scanning:
 		//bleSerial.on('scanning', function(status){
 		//  console.log("radio status: " + status);
-		//})
+		//})		
 		node.board.on('connected', function(data) {
 			console.log("connected");
 		});
@@ -122,7 +122,7 @@ module.exports = function(RED) {
 
 			node.on("input", function(msg) {
 				node.board.connect();
-				console.log("Connected to BLE. Sending a hello message");
+
 				node.board.write(msg.payload);
 
 			})
