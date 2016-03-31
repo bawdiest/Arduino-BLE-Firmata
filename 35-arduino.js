@@ -121,6 +121,7 @@ module.exports = function(RED) {
 			});
 
 			node.on("input", function(msg) {
+				node.board.connect();
 				console.log("Connected to BLE. Sending a hello message");
 				node.board.write(msg.payload);
 
