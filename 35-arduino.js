@@ -21,7 +21,7 @@ module.exports = function(RED) {
 	// The Board Definition - this opens (and closes) the connection
 	function ArduinoNode(n) {
 		RED.nodes.createNode(this,n);
-		var BleUart = require('ble-uart.js');
+		var BleUart = require('./ble-uart.js');
 
 		var node = this;
 
