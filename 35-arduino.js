@@ -46,6 +46,10 @@ module.exports = function(RED) {
 		node.board.on('connected', function(data) {
 			console.log("connected");
 		});
+		
+		node.board.on('disconnected', function(data) {
+			node.board.connect();
+			});
 
 		node.on('close', function(done) {
 			node.board.disconnect();
@@ -78,6 +82,13 @@ module.exports = function(RED) {
 					fill : "green",
 					shape : "dot",
 					text : "node-red:common.status.connected"
+				});
+			});
+			node.board.on('disconnected', function(data) {
+				node.status({
+					fill : "red",
+					shape : "ring",
+					text : "node-red:common.status.connecting"
 				});
 			});
 

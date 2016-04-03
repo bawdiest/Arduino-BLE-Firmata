@@ -206,6 +206,7 @@ var BleUart = function (name, options) {
   // the BLE disconnect function:
   self.disconnect = function() {
     self.connected = false;
+    self.emit('disconnected', self.connected);
   };
 
   // when the radio turns on, start scanning:
