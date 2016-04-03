@@ -95,8 +95,8 @@ module.exports = function(RED) {
 			// this function gets called when new data is received from
 			// the Bluetooth LE serial service:
 			node.board.on('data', function(data) {
-				//var msg = {payload:e.value, topic:e.pin};
-				node.send(data);
+				var msg = {payload:data.toString()};
+				node.send(msg);
 			});
 
 		}
