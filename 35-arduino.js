@@ -16,7 +16,7 @@
 
 module.exports = function(RED) {
 	//"use strict";
-	//var BLE = require('noble');
+/var BLE = require('noble');
 
 	// The Board Definition - this opens (and closes) the connection
 	function ArduinoNode(n) {
