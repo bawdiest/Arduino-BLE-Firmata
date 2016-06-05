@@ -15,7 +15,7 @@
  **/
 
 module.exports = function(RED) {
-	"use strict";
+	//"use strict";
 	//var BLE = require('noble');
 
 	// The Board Definition - this opens (and closes) the connection
